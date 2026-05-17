@@ -1,12 +1,7 @@
 const express = require('express');
-const app = express();
-app.use(express.json());
-
-const API_URL = 'http://103.249.117.201:49483/sunwin/tx?key=f7fe0e32f71684bd95ec94f59609801364193b297db4d60e';
-const PORT = 3000;
 
 // ============================================
-// SUNWIN ULTIMATE AI CLASS (500+ THUẬT TOÁN)
+// SUNWIN ULTIMATE PREDICTOR - FULL 500+ THUẬT TOÁN
 // ============================================
 
 class SunwinUltimateAI {
@@ -37,13 +32,37 @@ class SunwinUltimateAI {
             this.meanReversionPredict, this.ensembleVotingPredict,
             this.detect_1_1, this.detect_2_2, this.detect_3_3, this.detect_1_2_3,
             this.detect_dragon, this.detect_tiger, this.detect_triangle,
-            this.detect_zigzag, this.detect_4_4, this.detect_5_5
+            this.detect_zigzag, this.detect_4_4, this.detect_5_5,
+            this.diceTriplePredict, this.diceSumPredict, this.dicePairPredict,
+            this.diceHighLowPredict, this.diceOddEvenPredict, this.dicePrimePredict,
+            this.diceTransitionPredict, this.diceVariancePredict,
+            this.scoreExtremePredict, this.scoreMovingAveragePredict,
+            this.scoreBollingerPredict, this.scoreRSIPredict, this.scoreMomentumPredict,
+            this.trendShortPredict, this.trendLongPredict, this.switchRatePredict,
+            this.cycleAnalysisPredict, this.entropyAnalysisPredict,
+            this.pattern3Predict, this.pattern4Predict, this.pattern5Predict,
+            this.pattern6Predict, this.pattern7Predict, this.pattern8Predict,
+            this.knnPatternPredict, this.bayesianPatternPredict,
+            this.markov2Predict, this.markov3Predict, this.markov5Predict,
+            this.allTaiPredict, this.allXiuPredict, this.alternateRecentPredict,
+            this.scoreRecentPredict, this.diceRecentPredict,
+            this.gapPredict, this.fibonacciPositionPredict,
+            this.meanReversion2Predict, this.linearRegression2Predict,
+            this.decisionTree2Predict, this.ensembleVoting2Predict,
+            this.superBietKepPredict, this.superDiceAllPredict,
+            this.superTrendAllPredict, this.superPatternAllPredict,
+            this.superCauAllPredict, this.superRongHoPredict,
+            this.superScoreAllPredict, this.superFinalAdjustPredict
         ];
         const method = methods[index % methods.length];
-        if (method) return method.call(this);
+        if (method) {
+            const result = method.call(this);
+            return result;
+        }
         return null;
     }
 
+    // ----- Các phương thức dự đoán cụ thể (đã được rút gọn nhưng đầy đủ chức năng) -----
     markovPredict() {
         if (this.history.length < 4) return null;
         const seq = this.history.map(h => h.result === 'Tài' ? 'T' : 'X').join('');
@@ -93,7 +112,8 @@ class SunwinUltimateAI {
             if (matches.length >= 2) {
                 const nextIdx = matches[matches.length - 1] + cycle;
                 if (nextIdx < seq.length) {
-                    return { prediction: seq[nextIdx], confidence: 60 + Math.min(30, matches.length * 3), source: 'cycle' };
+                    const nextRes = seq[nextIdx];
+                    return { prediction: nextRes, confidence: 60 + Math.min(30, matches.length * 3), source: 'cycle' };
                 }
             }
         }
@@ -131,7 +151,10 @@ class SunwinUltimateAI {
         if (streakLen >= 3) {
             return { prediction: last === 'T' ? 'X' : 'T', confidence: 60 + Math.min(25, streakLen * 4), source: 'streak_break' };
         }
-        return { prediction: last, confidence: 55 + streakLen * 5, source: 'streak_continue' };
+        if (streakLen <= 2) {
+            return { prediction: last, confidence: 55 + streakLen * 5, source: 'streak_continue' };
+        }
+        return null;
     }
 
     bayesPredict() {
@@ -150,7 +173,7 @@ class SunwinUltimateAI {
 
     fibonacciPredict() {
         if (this.history.length < 12) return null;
-        const totals = this.history.slice(-12).map(h => h.total || 0);
+        const totals = this.history.slice(-12).map(h => h.tong || h.total || 0);
         const diffs = [];
         for (let i = 1; i < totals.length; i++) diffs.push(totals[i] - totals[i - 1]);
         const avgDiff = diffs.reduce((a, b) => a + b, 0) / diffs.length;
@@ -171,7 +194,7 @@ class SunwinUltimateAI {
         };
         let tai = 0, xiu = 0;
         for (const item of recent) {
-            if (!item.dice) continue;
+            if (!item.dice || !item.dice[0]) continue;
             const p12 = `${item.dice[0]},${item.dice[1]}`;
             const p23 = `${item.dice[1]},${item.dice[2]}`;
             const p13 = `${item.dice[0]},${item.dice[2]}`;
@@ -368,81 +391,682 @@ class SunwinUltimateAI {
 
     detect_1_2_3() {
         const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
-        if (results.length >= 6 && results.slice(-6).join('') === 'TXXXTX') return { prediction: 'X', confidence: 75, source: 'cau_1_2_3' };
+        if (results.length >= 6 && results.slice(-6).join('') === 'TXXTTT') return { prediction: 'X', confidence: 77, source: 'cau_1_2_3' };
+        if (results.length >= 6 && results.slice(-6).join('') === 'XTTXXX') return { prediction: 'T', confidence: 77, source: 'cau_1_2_3' };
         return null;
     }
 
     detect_dragon() {
         const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
-        const last5 = results.slice(-5);
-        if (last5.every(r => r === 'T')) return { prediction: 'T', confidence: 65, source: 'rong_tai' };
-        if (last5.every(r => r === 'X')) return { prediction: 'X', confidence: 65, source: 'rong_xiu' };
+        let tRun = 0;
+        for (let i = results.length - 1; i >= 0 && results[i] === 'T'; i--) tRun++;
+        if (tRun >= 6) return { prediction: 'X', confidence: 82, source: 'rong' };
+        if (tRun >= 4) return { prediction: 'T', confidence: 72, source: 'rong' };
         return null;
     }
 
     detect_tiger() {
         const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
-        if (results.length >= 3) {
-            const last3 = results.slice(-3);
-            if (last3[0] !== last3[1] && last3[1] !== last3[2] && last3[0] === last3[2])
-                return { prediction: last3[2] === 'T' ? 'X' : 'T', confidence: 70, source: 'ho' };
-        }
+        let xRun = 0;
+        for (let i = results.length - 1; i >= 0 && results[i] === 'X'; i--) xRun++;
+        if (xRun >= 6) return { prediction: 'T', confidence: 82, source: 'ho' };
+        if (xRun >= 4) return { prediction: 'X', confidence: 72, source: 'ho' };
         return null;
     }
 
     detect_triangle() {
         const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
-        if (results.length >= 5) {
-            const last5 = results.slice(-5).join('');
-            if (last5 === 'TTTXT' || last5 === 'XXXTX') return { prediction: 'X', confidence: 68, source: 'tam_giac' };
-        }
+        const last5 = results.slice(-5).join('');
+        if (last5 === 'TXTXT') return { prediction: 'X', confidence: 80, source: 'tam_giac' };
+        if (last5 === 'XTXTX') return { prediction: 'T', confidence: 80, source: 'tam_giac' };
         return null;
     }
 
     detect_zigzag() {
         const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
-        if (results.length >= 6) {
-            const last6 = results.slice(-6);
-            let isZigzag = true;
-            for (let i = 1; i < last6.length; i++) {
-                if (last6[i] === last6[i - 1]) { isZigzag = false; break; }
-            }
-            if (isZigzag) return { prediction: last6[last6.length - 1] === 'T' ? 'X' : 'T', confidence: 80, source: 'zigzag_6' };
-        }
+        if (results.length >= 5 && results.slice(-5).join('') === 'TXTXT') return { prediction: 'X', confidence: 80, source: 'zigzag5' };
+        if (results.length >= 5 && results.slice(-5).join('') === 'XTXTX') return { prediction: 'T', confidence: 80, source: 'zigzag5' };
         return null;
     }
 
     detect_4_4() {
         const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
-        if (results.length >= 8 && results.slice(-8).join('') === 'TTTTXXXX') return { prediction: 'T', confidence: 75, source: 'cau_4_4' };
-        if (results.length >= 8 && results.slice(-8).join('') === 'XXXXTTTT') return { prediction: 'X', confidence: 75, source: 'cau_4_4' };
+        if (results.length >= 8 && results.slice(-8).join('') === 'TTTTXXXX') return { prediction: 'X', confidence: 79, source: 'cau_4_4' };
+        if (results.length >= 8 && results.slice(-8).join('') === 'XXXXTTTT') return { prediction: 'T', confidence: 79, source: 'cau_4_4' };
         return null;
     }
 
     detect_5_5() {
         const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
-        if (results.length >= 10 && results.slice(-10).join('') === 'TTTTTXXXXX') return { prediction: 'T', confidence: 73, source: 'cau_5_5' };
-        if (results.length >= 10 && results.slice(-10).join('') === 'XXXXXTTTT') return { prediction: 'X', confidence: 73, source: 'cau_5_5' };
+        if (results.length >= 10 && results.slice(-10).join('') === 'TTTTTXXXXX') return { prediction: 'X', confidence: 77, source: 'cau_5_5' };
+        if (results.length >= 10 && results.slice(-10).join('') === 'XXXXXTTTTT') return { prediction: 'T', confidence: 77, source: 'cau_5_5' };
         return null;
     }
 
-    // ============================================
-    // PREDICT CHÍNH (ENSEMBLE 500+ MODELS)
-    // ============================================
+    diceTriplePredict() {
+        if (this.history.length < 5) return null;
+        const last = this.history[this.history.length - 1];
+        if (!last.dice || !last.dice[0]) return null;
+        const triple = last.dice.join(',');
+        let tc = 0, tt = 0;
+        for (let i = 0; i < this.history.length - 1; i++) {
+            if (this.history[i].dice && this.history[i].dice.join(',') === triple) {
+                tc++;
+                if (this.history[i + 1].result === 'Tài') tt++;
+            }
+        }
+        if (tc >= 3) {
+            const prob = tt / tc;
+            return { prediction: prob > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(prob - 0.5) * 80, source: 'dice_triple' };
+        }
+        return null;
+    }
+
+    diceSumPredict() {
+        if (this.history.length < 5) return null;
+        const last = this.history[this.history.length - 1];
+        if (!last.dice) return null;
+        const sum = last.dice.reduce((a, b) => a + b, 0);
+        const sumAfter = {};
+        for (let i = 0; i < this.history.length - 1; i++) {
+            if (!this.history[i].dice) continue;
+            const s = this.history[i].dice.reduce((a, b) => a + b, 0);
+            if (s === sum && i + 1 < this.history.length && this.history[i + 1].dice) {
+                const ns = this.history[i + 1].dice.reduce((a, b) => a + b, 0);
+                sumAfter[ns] = (sumAfter[ns] || 0) + 1;
+            }
+        }
+        const total = Object.values(sumAfter).reduce((a, b) => a + b, 0);
+        if (total >= 5) {
+            let bestSum = 3, bestCount = 0;
+            for (let s = 3; s <= 18; s++) if ((sumAfter[s] || 0) > bestCount) { bestCount = sumAfter[s]; bestSum = s; }
+            return { prediction: bestSum >= 11 ? 'T' : 'X', confidence: 50 + (bestCount / total) * 40, source: 'dice_sum' };
+        }
+        return null;
+    }
+
+    dicePairPredict() {
+        if (this.history.length < 5) return null;
+        const last = this.history[this.history.length - 1];
+        if (!last.dice) return null;
+        const p12 = `${last.dice[0]},${last.dice[1]}`;
+        const p23 = `${last.dice[1]},${last.dice[2]}`;
+        const p13 = `${last.dice[0]},${last.dice[2]}`;
+        let pc = 0, pt = 0;
+        for (let i = 0; i < this.history.length - 1; i++) {
+            if (!this.history[i].dice) continue;
+            const hp12 = `${this.history[i].dice[0]},${this.history[i].dice[1]}`;
+            const hp23 = `${this.history[i].dice[1]},${this.history[i].dice[2]}`;
+            const hp13 = `${this.history[i].dice[0]},${this.history[i].dice[2]}`;
+            if ((hp12 === p12 || hp23 === p23 || hp13 === p13) && i + 1 < this.history.length) {
+                pc++;
+                if (this.history[i + 1].result === 'Tài') pt++;
+            }
+        }
+        if (pc >= 5) {
+            const prob = pt / pc;
+            return { prediction: prob > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(prob - 0.5) * 55, source: 'dice_pair' };
+        }
+        return null;
+    }
+
+    diceHighLowPredict() {
+        if (this.history.length < 5) return null;
+        const last = this.history[this.history.length - 1];
+        if (!last.dice) return null;
+        const hl = last.dice.map(d => d >= 4 ? 'H' : 'L').join('');
+        let hlc = 0, hlt = 0;
+        for (let i = 0; i < this.history.length - 1; i++) {
+            if (!this.history[i].dice) continue;
+            const hhl = this.history[i].dice.map(d => d >= 4 ? 'H' : 'L').join('');
+            if (hhl === hl && i + 1 < this.history.length) {
+                hlc++;
+                if (this.history[i + 1].result === 'Tài') hlt++;
+            }
+        }
+        if (hlc >= 5) {
+            const prob = hlt / hlc;
+            return { prediction: prob > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(prob - 0.5) * 45, source: 'dice_hl' };
+        }
+        return null;
+    }
+
+    diceOddEvenPredict() {
+        if (this.history.length < 5) return null;
+        const last = this.history[this.history.length - 1];
+        if (!last.dice) return null;
+        const oe = last.dice.map(d => d % 2 === 0 ? 'C' : 'L').join('');
+        let oec = 0, oet = 0;
+        for (let i = 0; i < this.history.length - 1; i++) {
+            if (!this.history[i].dice) continue;
+            const hoe = this.history[i].dice.map(d => d % 2 === 0 ? 'C' : 'L').join('');
+            if (hoe === oe && i + 1 < this.history.length) {
+                oec++;
+                if (this.history[i + 1].result === 'Tài') oet++;
+            }
+        }
+        if (oec >= 5) {
+            const prob = oet / oec;
+            return { prediction: prob > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(prob - 0.5) * 35, source: 'dice_oe' };
+        }
+        return null;
+    }
+
+    dicePrimePredict() {
+        if (this.history.length < 5) return null;
+        const last = this.history[this.history.length - 1];
+        if (!last.dice) return null;
+        const prime = last.dice.filter(x => [2, 3, 5].includes(x)).length;
+        let prc = 0, prt = 0;
+        for (let i = 0; i < this.history.length - 1; i++) {
+            if (!this.history[i].dice) continue;
+            const hp = this.history[i].dice.filter(x => [2, 3, 5].includes(x)).length;
+            if (hp === prime && i + 1 < this.history.length) {
+                prc++;
+                if (this.history[i + 1].result === 'Tài') prt++;
+            }
+        }
+        if (prc >= 5) {
+            const prob = prt / prc;
+            return { prediction: prob > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(prob - 0.5) * 30, source: 'dice_prime' };
+        }
+        return null;
+    }
+
+    diceTransitionPredict() {
+        if (this.history.length < 3) return null;
+        const last = this.history[this.history.length - 1];
+        const prev = this.history[this.history.length - 2];
+        if (!last.dice || !prev.dice) return null;
+        let transCount = 0, transTai = 0;
+        for (let i = 0; i < this.history.length - 2; i++) {
+            const cp = this.history[i], cn = this.history[i + 1];
+            if (!cp.dice || !cn.dice) continue;
+            for (let j = 0; j < 3; j++) {
+                if (cp.dice[j] === prev.dice[j] && cn.dice[j] === last.dice[j]) transCount++;
+            }
+            if (cn.result === 'Tài') transTai++;
+        }
+        if (transCount >= 5) {
+            const prob = transTai / transCount;
+            return { prediction: prob > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(prob - 0.5) * 40, source: 'dice_transition' };
+        }
+        return null;
+    }
+
+    diceVariancePredict() {
+        if (this.history.length < 10) return null;
+        const scores = this.history.slice(-10).map(h => h.dice ? h.dice.reduce((a, b) => a + b, 0) : 0);
+        const avg = scores.reduce((a, b) => a + b, 0) / 10;
+        const variance = scores.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / 10;
+        if (variance > 10) return { prediction: scores[scores.length - 1] >= 11 ? 'X' : 'T', confidence: 58, source: 'dice_variance_high' };
+        if (variance < 3) return { prediction: scores[scores.length - 1] >= 11 ? 'T' : 'X', confidence: 58, source: 'dice_variance_low' };
+        return null;
+    }
+
+    scoreExtremePredict() {
+        const lastScore = this.history[this.history.length - 1]?.tong || this.history[this.history.length - 1]?.total || (this.history[this.history.length - 1]?.dice?.reduce((a, b) => a + b, 0)) || 0;
+        if (lastScore >= 17) return { prediction: 'X', confidence: 90, source: 'score_extreme_high' };
+        if (lastScore >= 15) return { prediction: 'X', confidence: 75, source: 'score_high' };
+        if (lastScore <= 4) return { prediction: 'T', confidence: 90, source: 'score_extreme_low' };
+        if (lastScore <= 6) return { prediction: 'T', confidence: 70, source: 'score_low' };
+        return null;
+    }
+
+    scoreMovingAveragePredict() {
+        if (this.history.length < 10) return null;
+        const scores = this.history.slice(-10).map(h => h.tong || h.total || (h.dice ? h.dice.reduce((a, b) => a + b, 0) : 0));
+        const ma5 = scores.slice(-5).reduce((a, b) => a + b, 0) / 5;
+        const ma10 = scores.reduce((a, b) => a + b, 0) / 10;
+        if (ma5 > ma10 + 2) return { prediction: 'T', confidence: 64, source: 'score_ma_up' };
+        if (ma5 < ma10 - 2) return { prediction: 'X', confidence: 64, source: 'score_ma_down' };
+        return null;
+    }
+
+    scoreBollingerPredict() {
+        if (this.history.length < 10) return null;
+        const scores = this.history.slice(-10).map(h => h.tong || h.total || (h.dice ? h.dice.reduce((a, b) => a + b, 0) : 0));
+        const avg = scores.reduce((a, b) => a + b, 0) / 10;
+        const variance = scores.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / 10;
+        const std = Math.sqrt(variance);
+        const last = scores[scores.length - 1];
+        if (last > avg + 2 * std) return { prediction: 'X', confidence: 68, source: 'score_bb_high' };
+        if (last < avg - 2 * std) return { prediction: 'T', confidence: 68, source: 'score_bb_low' };
+        return null;
+    }
+
+    scoreRSIPredict() {
+        if (this.history.length < 10) return null;
+        const scores = this.history.slice(-10).map(h => h.tong || h.total || (h.dice ? h.dice.reduce((a, b) => a + b, 0) : 0));
+        let gains = 0, losses = 0;
+        for (let i = 1; i < 10; i++) {
+            const diff = scores[i] - scores[i - 1];
+            if (diff > 0) gains += diff; else losses -= Math.abs(diff);
+        }
+        const rs = losses === 0 ? 100 : gains / losses;
+        const rsi = 100 - (100 / (1 + rs));
+        if (rsi > 70) return { prediction: 'X', confidence: 64, source: 'score_rsi_high' };
+        if (rsi < 30) return { prediction: 'T', confidence: 64, source: 'score_rsi_low' };
+        return null;
+    }
+
+    scoreMomentumPredict() {
+        if (this.history.length < 10) return null;
+        const scores = this.history.slice(-10).map(h => h.tong || h.total || (h.dice ? h.dice.reduce((a, b) => a + b, 0) : 0));
+        const first5 = scores.slice(0, 5).reduce((a, b) => a + b, 0) / 5;
+        const last5 = scores.slice(-5).reduce((a, b) => a + b, 0) / 5;
+        const momentum = last5 - first5;
+        if (momentum > 2) return { prediction: 'T', confidence: 60, source: 'score_momentum_up' };
+        if (momentum < -2) return { prediction: 'X', confidence: 60, source: 'score_momentum_down' };
+        return null;
+    }
+
+    trendShortPredict() {
+        if (this.history.length < 5) return null;
+        const results = this.history.slice(-5).map(h => h.result === 'Tài' ? 'T' : 'X');
+        const tCount = results.filter(r => r === 'T').length;
+        if (tCount >= 4) return { prediction: 'X', confidence: 62, source: 'trend_short_overbought' };
+        if (tCount <= 1) return { prediction: 'T', confidence: 62, source: 'trend_short_oversold' };
+        return null;
+    }
+
+    trendLongPredict() {
+        if (this.history.length < 20) return null;
+        const results = this.history.slice(-20).map(h => h.result === 'Tài' ? 'T' : 'X');
+        const tCount = results.filter(r => r === 'T').length;
+        if (tCount >= 13) return { prediction: 'X', confidence: 65, source: 'trend_long_overbought' };
+        if (tCount <= 7) return { prediction: 'T', confidence: 65, source: 'trend_long_oversold' };
+        return null;
+    }
+
+    switchRatePredict() {
+        if (this.history.length < 10) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        let sw = 0;
+        for (let i = results.length - 9; i < results.length; i++) if (results[i] !== results[i - 1]) sw++;
+        if (sw >= 7) return { prediction: results[results.length - 1] === 'T' ? 'X' : 'T', confidence: 68, source: 'switch_high' };
+        if (sw <= 2) return { prediction: results[results.length - 1], confidence: 58, source: 'switch_low' };
+        return null;
+    }
+
+    cycleAnalysisPredict() {
+        if (this.history.length < 30) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        let bestLag = 0, bestCorr = 0;
+        for (let lag = 2; lag <= 15; lag++) {
+            if (results.length <= lag * 2) continue;
+            let matches = 0, total = 0;
+            for (let i = lag; i < Math.min(results.length, 50); i++) {
+                if (results[results.length - 1 - i] === results[results.length - 1 - i - lag]) matches++;
+                total++;
+            }
+            const corr = total > 0 ? matches / total : 0;
+            if (Math.abs(corr - 0.5) > bestCorr) { bestCorr = Math.abs(corr - 0.5); bestLag = lag; }
+        }
+        if (bestLag > 0 && bestCorr > 0.1) {
+            return { prediction: results[results.length - 1 - bestLag], confidence: 50 + bestCorr * 30, source: 'cycle_analysis' };
+        }
+        return null;
+    }
+
+    entropyAnalysisPredict() {
+        if (this.history.length < 20) return null;
+        const results = this.history.slice(-20).map(h => h.result === 'Tài' ? 'T' : 'X');
+        const pT = results.filter(r => r === 'T').length / 20;
+        if (pT === 0 || pT === 1) return { prediction: pT === 0 ? 'T' : 'X', confidence: 72, source: 'entropy_analysis_extreme' };
+        const entropy = -pT * Math.log2(pT) - (1 - pT) * Math.log2(1 - pT);
+        if (entropy > 0.95) return { prediction: results[results.length - 1] === 'T' ? 'X' : 'T', confidence: 62, source: 'entropy_analysis_high' };
+        if (entropy < 0.3) return { prediction: results[results.length - 1], confidence: 64, source: 'entropy_analysis_low' };
+        return null;
+    }
+
+    pattern3Predict() {
+        if (this.history.length < 4) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const pattern = results.slice(-3).join('');
+        const nextCounts = { T: 0, X: 0 };
+        for (let i = 0; i < results.length - 3; i++) {
+            if (results.slice(i, i + 3).join('') === pattern) nextCounts[results[i + 3]]++;
+        }
+        const total = nextCounts.T + nextCounts.X;
+        if (total >= 5) {
+            const probT = nextCounts.T / total;
+            return { prediction: probT > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(probT - 0.5) * 80, source: 'pattern3' };
+        }
+        return null;
+    }
+
+    pattern4Predict() {
+        if (this.history.length < 5) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const pattern = results.slice(-4).join('');
+        const nextCounts = { T: 0, X: 0 };
+        for (let i = 0; i < results.length - 4; i++) {
+            if (results.slice(i, i + 4).join('') === pattern) nextCounts[results[i + 4]]++;
+        }
+        const total = nextCounts.T + nextCounts.X;
+        if (total >= 4) {
+            const probT = nextCounts.T / total;
+            return { prediction: probT > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(probT - 0.5) * 70, source: 'pattern4' };
+        }
+        return null;
+    }
+
+    pattern5Predict() {
+        if (this.history.length < 6) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const pattern = results.slice(-5).join('');
+        const nextCounts = { T: 0, X: 0 };
+        for (let i = 0; i < results.length - 5; i++) {
+            if (results.slice(i, i + 5).join('') === pattern) nextCounts[results[i + 5]]++;
+        }
+        const total = nextCounts.T + nextCounts.X;
+        if (total >= 3) {
+            const probT = nextCounts.T / total;
+            return { prediction: probT > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(probT - 0.5) * 60, source: 'pattern5' };
+        }
+        return null;
+    }
+
+    pattern6Predict() { return this.genericPatternPredict(6, 3, 'pattern6'); }
+    pattern7Predict() { return this.genericPatternPredict(7, 3, 'pattern7'); }
+    pattern8Predict() { return this.genericPatternPredict(8, 2, 'pattern8'); }
+
+    genericPatternPredict(len, minTotal, source) {
+        if (this.history.length < len + 1) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const pattern = results.slice(-len).join('');
+        const nextCounts = { T: 0, X: 0 };
+        for (let i = 0; i < results.length - len; i++) {
+            if (results.slice(i, i + len).join('') === pattern) nextCounts[results[i + len]]++;
+        }
+        const total = nextCounts.T + nextCounts.X;
+        if (total >= minTotal) {
+            const probT = nextCounts.T / total;
+            return { prediction: probT > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(probT - 0.5) * (100 - len * 5), source };
+        }
+        return null;
+    }
+
+    knnPatternPredict() {
+        if (this.history.length < 12) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const query = results.slice(-10);
+        const distances = [];
+        for (let i = 0; i < results.length - 10; i++) {
+            const seg = results.slice(i, i + 10);
+            let dist = 0;
+            for (let j = 0; j < 10; j++) if (seg[j] !== query[j]) dist++;
+            if (i + 10 < results.length) distances.push({ dist, next: results[i + 10], recency: i / results.length });
+        }
+        distances.sort((a, b) => a.dist - b.dist || b.recency - a.recency);
+        const k = Math.min(7, distances.length);
+        const neighbors = distances.slice(0, k);
+        const tCount = neighbors.filter(n => n.next === 'T').length;
+        const probT = tCount / k;
+        if (k >= 3) return { prediction: probT > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(probT - 0.5) * 60, source: 'knn_pattern' };
+        return null;
+    }
+
+    bayesianPatternPredict() {
+        if (this.history.length < 10) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const last5 = results.slice(-5).join('');
+        const pT = results.filter(r => r === 'T').length / results.length;
+        const pX = 1 - pT;
+        let condT = 0, condX = 0, totalT = 0, totalX = 0;
+        for (let i = 0; i < results.length - 5; i++) {
+            if (results.slice(i, i + 5).join('') === last5) {
+                if (results[i + 5] === 'T') { condT++; totalT++; } else { condX++; totalX++; }
+            }
+        }
+        const postT = pT * (condT / Math.max(1, totalT));
+        const postX = pX * (condX / Math.max(1, totalX));
+        const total = postT + postX;
+        if (total > 0) {
+            const probT = postT / total;
+            return { prediction: probT > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(probT - 0.5) * 40, source: 'bayesian_pattern' };
+        }
+        return null;
+    }
+
+    markov2Predict() { return this.markovGeneric(2, 'markov2'); }
+    markov3Predict() { return this.markovGeneric(3, 'markov3'); }
+    markov5Predict() { return this.markovGeneric(5, 'markov5'); }
+
+    markovGeneric(order, source) {
+        if (this.history.length <= order) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const state = results.slice(-order).join(',');
+        const nextCounts = { T: 0, X: 0 };
+        for (let i = 0; i <= results.length - order - 1; i++) {
+            if (results.slice(i, i + order).join(',') === state) nextCounts[results[i + order]]++;
+        }
+        const total = nextCounts.T + nextCounts.X;
+        if (total >= 3) {
+            const probT = nextCounts.T / total;
+            return { prediction: probT > 0.5 ? 'T' : 'X', confidence: 50 + Math.abs(probT - 0.5) * 60, source };
+        }
+        return null;
+    }
+
+    allTaiPredict() {
+        const results = this.history.slice(-5).map(h => h.result === 'Tài' ? 'T' : 'X');
+        if (results.every(r => r === 'T')) return { prediction: 'X', confidence: 78, source: 'all_tai' };
+        return null;
+    }
+
+    allXiuPredict() {
+        const results = this.history.slice(-5).map(h => h.result === 'Tài' ? 'T' : 'X');
+        if (results.every(r => r === 'X')) return { prediction: 'T', confidence: 78, source: 'all_xiu' };
+        return null;
+    }
+
+    alternateRecentPredict() {
+        const results = this.history.slice(-4).map(h => h.result === 'Tài' ? 'T' : 'X');
+        let isAlt = true;
+        for (let i = 1; i < 4; i++) if (results[i] === results[i - 1]) { isAlt = false; break; }
+        if (isAlt) return { prediction: results[results.length - 1] === 'T' ? 'X' : 'T', confidence: 72, source: 'alternate_recent' };
+        return null;
+    }
+
+    scoreRecentPredict() {
+        if (this.history.length < 3) return null;
+        const lastScores = this.history.slice(-3).map(h => h.tong || h.total || (h.dice ? h.dice.reduce((a, b) => a + b, 0) : 0));
+        if (lastScores.every(s => s >= 15)) return { prediction: 'X', confidence: 75, source: 'score_recent_high' };
+        if (lastScores.every(s => s <= 5)) return { prediction: 'T', confidence: 75, source: 'score_recent_low' };
+        return null;
+    }
+
+    diceRecentPredict() {
+        if (this.history.length < 3) return null;
+        const lastDice = this.history.slice(-3).map(h => h.dice ? h.dice.reduce((a, b) => a + b, 0) : null);
+        if (lastDice.some(d => d === null)) return null;
+        const allSame = lastDice.every(d => d === lastDice[0]);
+        if (allSame) return { prediction: lastDice[0] >= 11 ? 'X' : 'T', confidence: 65, source: 'dice_recent' };
+        return null;
+    }
+
+    gapPredict() {
+        if (this.history.length < 10) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const currentResult = results[results.length - 1];
+        let countSince = 0;
+        for (let i = results.length - 2; i >= 0; i--) {
+            if (results[i] !== currentResult) { countSince = results.length - 1 - i; break; }
+        }
+        if (countSince >= 5) return { prediction: currentResult === 'T' ? 'X' : 'T', confidence: 62, source: 'gap' };
+        return null;
+    }
+
+    fibonacciPositionPredict() {
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const fibs = [2, 3, 5, 8, 13, 21];
+        const currentResult = results[results.length - 1];
+        let matchCount = 0;
+        for (const f of fibs) {
+            if (results.length > f && results[results.length - 1 - f] === currentResult) matchCount++;
+        }
+        if (matchCount >= 4) return { prediction: currentResult === 'T' ? 'X' : 'T', confidence: 65, source: 'fibonacci_position' };
+        return null;
+    }
+
+    meanReversion2Predict() {
+        if (this.history.length < 15) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const tCount = results.filter(r => r === 'T').length;
+        const mean = tCount / results.length;
+        const last10 = results.slice(-10).filter(r => r === 'T').length / 10;
+        if (last10 > mean + 0.15) return { prediction: 'X', confidence: 62, source: 'mean_reversion2' };
+        if (last10 < mean - 0.15) return { prediction: 'T', confidence: 62, source: 'mean_reversion2' };
+        return null;
+    }
+
+    linearRegression2Predict() {
+        if (this.history.length < 10) return null;
+        const results = this.history.slice(-10).map(h => h.result === 'Tài' ? 1 : 0);
+        const x = Array.from({ length: 10 }, (_, i) => i);
+        const sumX = x.reduce((a, b) => a + b, 0), sumY = results.reduce((a, b) => a + b, 0);
+        const sumXY = x.reduce((s, xi, i) => s + xi * results[i], 0), sumX2 = x.reduce((s, xi) => s + xi * xi, 0);
+        const slope = (10 * sumXY - sumX * sumY) / (10 * sumX2 - sumX * sumX);
+        const nextPred = (sumY / 10) + slope * 10;
+        return { prediction: nextPred > 0.5 ? 'T' : 'X', confidence: 55 + Math.abs(slope) * 10, source: 'linear_regression2' };
+    }
+
+    decisionTree2Predict() {
+        if (this.history.length < 10) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const last1 = results[results.length - 1], last2 = results[results.length - 2], last3 = results[results.length - 3];
+        const t5 = results.slice(-5).filter(r => r === 'T').length;
+        if (last1 === 'T' && last2 === 'X' && last3 === 'T') return { prediction: 'X', confidence: 70, source: 'dt2_pattern' };
+        if (last1 === 'X' && last2 === 'T' && last3 === 'X') return { prediction: 'T', confidence: 70, source: 'dt2_pattern' };
+        return null;
+    }
+
+    ensembleVoting2Predict() {
+        const methods = [this.markovPredict, this.frequencyPredict, this.rsiPredict, this.meanReversionPredict, this.patternMatchPredict];
+        const votes = [];
+        for (const m of methods) {
+            const pred = m.call(this);
+            if (pred) votes.push(pred.prediction);
+        }
+        if (votes.length === 0) return null;
+        const tCount = votes.filter(v => v === 'T').length;
+        return { prediction: tCount > votes.length / 2 ? 'T' : 'X', confidence: 55 + (Math.max(tCount, votes.length - tCount) / votes.length) * 25, source: 'ensemble_voting2' };
+    }
+
+    superBietKepPredict() {
+        if (this.history.length < 20) return null;
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        const allStreaks = [];
+        let cur = 1;
+        for (let i = 1; i < results.length; i++) {
+            if (results[i] === results[i - 1]) cur++;
+            else { if (cur >= 3) allStreaks.push({ type: results[i - 1], len: cur }); cur = 1; }
+        }
+        if (cur >= 3) allStreaks.push({ type: results[results.length - 1], len: cur });
+        if (allStreaks.length >= 2) {
+            const l2 = allStreaks.slice(-2);
+            if (l2[0].type !== l2[1].type) {
+                const diff = Math.abs(l2[0].len - l2[1].len);
+                if (diff <= Math.max(l2[0].len, l2[1].len) * 0.3) {
+                    const avg = (l2[0].len + l2[1].len) / 2;
+                    let cl = 1;
+                    for (let i = results.length - 2; i >= 0; i--) {
+                        if (results[i] === results[results.length - 1]) cl++; else break;
+                    }
+                    return { prediction: cl < avg ? results[results.length - 1] : (results[results.length - 1] === 'T' ? 'X' : 'T'), confidence: 72, source: 'super_biet_kep' };
+                }
+            }
+        }
+        return null;
+    }
+
+    superDiceAllPredict() {
+        const preds = [this.diceTriplePredict(), this.diceSumPredict(), this.dicePairPredict(), this.diceHighLowPredict(), this.diceOddEvenPredict()].filter(p => p);
+        if (preds.length >= 3 && preds.every(p => p.prediction === preds[0].prediction)) {
+            return { prediction: preds[0].prediction, confidence: 75, source: 'super_dice_all' };
+        }
+        return null;
+    }
+
+    superTrendAllPredict() {
+        const preds = [this.trendShortPredict(), this.trendLongPredict(), this.switchRatePredict()].filter(p => p);
+        if (preds.length >= 2 && preds.every(p => p.prediction === preds[0].prediction)) {
+            return { prediction: preds[0].prediction, confidence: 68, source: 'super_trend_all' };
+        }
+        return null;
+    }
+
+    superPatternAllPredict() {
+        const preds = [this.pattern3Predict(), this.pattern4Predict(), this.pattern5Predict()].filter(p => p);
+        if (preds.length >= 2 && preds.every(p => p.prediction === preds[0].prediction)) {
+            return { prediction: preds[0].prediction, confidence: 70, source: 'super_pattern_all' };
+        }
+        return null;
+    }
+
+    superCauAllPredict() {
+        const preds = [this.detect_1_1(), this.detect_2_2(), this.detect_3_3(), this.detect_1_2_3(), this.detect_4_4(), this.detect_5_5()].filter(p => p);
+        if (preds.length >= 2 && preds.every(p => p.prediction === preds[0].prediction)) {
+            return { prediction: preds[0].prediction, confidence: 75, source: 'super_cau_all' };
+        }
+        return null;
+    }
+
+    superRongHoPredict() {
+        const rong = this.detect_dragon();
+        const ho = this.detect_tiger();
+        if (rong && ho && rong.prediction === ho.prediction) {
+            return { prediction: rong.prediction, confidence: Math.max(rong.confidence, ho.confidence) + 5, source: 'super_rong_ho' };
+        }
+        if (rong && rong.confidence >= 82) return rong;
+        if (ho && ho.confidence >= 82) return ho;
+        return null;
+    }
+
+    superScoreAllPredict() {
+        const preds = [this.scoreExtremePredict(), this.scoreMovingAveragePredict(), this.scoreBollingerPredict(), this.scoreRSIPredict()].filter(p => p);
+        if (preds.length >= 2 && preds.every(p => p.prediction === preds[0].prediction)) {
+            return { prediction: preds[0].prediction, confidence: 72, source: 'super_score_all' };
+        }
+        return null;
+    }
+
+    superFinalAdjustPredict() {
+        const results = this.history.map(h => h.result === 'Tài' ? 'T' : 'X');
+        let streak = 1;
+        for (let i = results.length - 2; i >= 0; i--) {
+            if (results[i] === results[results.length - 1]) streak++; else break;
+        }
+        if (streak >= 10) return { prediction: results[results.length - 1] === 'T' ? 'X' : 'T', confidence: 90, source: 'super_final_biet' };
+        if (streak >= 7) {
+            const lastScore = this.history[this.history.length - 1]?.tong || 0;
+            if (results[results.length - 1] === 'T' && lastScore >= 16) return { prediction: 'X', confidence: 88, source: 'super_final_score' };
+            if (results[results.length - 1] === 'X' && lastScore <= 5) return { prediction: 'T', confidence: 88, source: 'super_final_score' };
+        }
+        return null;
+    }
+
+    // ========== DỰ ĐOÁN CHÍNH ==========
     predict() {
-        if (this.history.length < 5) return { prediction: 'Tài', confidence: 50 };
+        if (this.history.length < 5) {
+            return { prediction: 'Cần ít nhất 5 phiên', confidence: 0, wait: true };
+        }
 
         const allPredictions = [];
-        for (let i = 1; i <= 500; i++) {
-            const key = `model_${i}`;
-            const modelFn = this.models[key];
-            if (!modelFn) continue;
+        const modelNames = Object.keys(this.models);
+        
+        for (let i = 0; i < 500; i++) {
+            const modelName = modelNames[i];
+            if (!modelName) continue;
             try {
-                const result = modelFn();
-                if (result && result.prediction) {
+                const pred = this.models[modelName]();
+                if (pred && pred.prediction) {
                     allPredictions.push({
-                        ...result,
-                        weight: (this.weights[key] || 1) * (result.confidence || 60)
+                        ...pred,
+                        weight: this.weights[modelName] || 1,
+                        model: modelName
                     });
                 }
             } catch (e) {}
@@ -453,13 +1077,15 @@ class SunwinUltimateAI {
             return { prediction: last.result === 'Tài' ? 'Xỉu' : 'Tài', confidence: 50 };
         }
 
-        const topPredictions = [...allPredictions].sort((a, b) => b.weight - a.weight);
+        allPredictions.sort((a, b) => (b.weight || 1) * b.confidence - (a.weight || 1) * a.confidence);
+        const topPredictions = allPredictions.slice(0, 100);
 
-        let scoreT = 0, totalWeight = 0;
-        for (const p of allPredictions) {
-            const w = p.weight || 1;
-            if (p.prediction === 'T') scoreT += w;
-            totalWeight += w;
+        let scoreT = 0, scoreX = 0, totalWeight = 0;
+        for (const pred of topPredictions) {
+            const weight = (pred.weight || 1) * (pred.confidence / 100);
+            if (pred.prediction === 'T') scoreT += weight;
+            else if (pred.prediction === 'X') scoreX += weight;
+            totalWeight += weight;
         }
 
         if (totalWeight === 0) {
@@ -476,13 +1102,26 @@ class SunwinUltimateAI {
         const top20 = topPredictions.slice(0, 20);
         const top50 = topPredictions.slice(0, 50);
 
-        const top10Agree = top10.every(p => p.prediction === top10[0]?.prediction);
-        const top20Agree = top20.every(p => p.prediction === top20[0]?.prediction);
-        const top50Agree = top50.every(p => p.prediction === top50[0]?.prediction);
+        const top10Agree = top10.every(p => p.prediction === top10[0].prediction);
+        const top20Agree = top20.every(p => p.prediction === top20[0].prediction);
+        const top50Agree = top50.every(p => p.prediction === top50[0].prediction);
 
         if (top50Agree) confidence = Math.min(99, confidence + 20);
         else if (top20Agree) confidence = Math.min(99, confidence + 12);
         else if (top10Agree) confidence = Math.min(99, confidence + 6);
+
+        this.predictions.push({
+            prediction: finalPred === 'T' ? 'Tài' : 'Xỉu',
+            confidence,
+            probT,
+            totalModels: allPredictions.length,
+            top10Agree,
+            top20Agree,
+            top50Agree,
+            timestamp: Date.now(),
+            topSources: topPredictions.slice(0, 5).map(p => p.source)
+        });
+        if (this.predictions.length > 500) this.predictions.shift();
 
         return {
             prediction: finalPred === 'T' ? 'Tài' : 'Xỉu',
@@ -495,7 +1134,7 @@ class SunwinUltimateAI {
             topSources: topPredictions.slice(0, 5).map(p => ({
                 source: p.source,
                 prediction: p.prediction === 'T' ? 'Tài' : 'Xỉu',
-                confidence: (p.confidence || 0).toFixed(1)
+                confidence: p.confidence.toFixed(1)
             }))
         };
     }
@@ -503,16 +1142,17 @@ class SunwinUltimateAI {
     addSession(sessionData) {
         const resultStr = sessionData.ket_qua || sessionData.result || '';
         let normResult = resultStr.charAt(0).toUpperCase() + resultStr.slice(1).toLowerCase();
-        if (['T', 'Tai', 'Tài', 'tài'].includes(normResult) || resultStr.toLowerCase().includes('tài') || resultStr.toLowerCase() === 'tai') normResult = 'Tài';
-        else if (['X', 'Xiu', 'Xỉu', 'xỉu'].includes(normResult) || resultStr.toLowerCase().includes('xỉu') || resultStr.toLowerCase() === 'xiu') normResult = 'Xỉu';
+        if (['T', 'Tai', 'Tài'].includes(normResult)) normResult = 'Tài';
+        else if (['X', 'Xiu', 'Xỉu'].includes(normResult)) normResult = 'Xỉu';
         else return;
 
+        const total = sessionData.tong || sessionData.total || 
+                      ((sessionData.xuc_xac_1 || 0) + (sessionData.xuc_xac_2 || 0) + (sessionData.xuc_xac_3 || 0));
         const dice = [
             sessionData.xuc_xac_1 || sessionData.dice1 || sessionData.d1 || 0,
             sessionData.xuc_xac_2 || sessionData.dice2 || sessionData.d2 || 0,
             sessionData.xuc_xac_3 || sessionData.dice3 || sessionData.d3 || 0
         ];
-        const total = sessionData.tong || sessionData.total || dice.reduce((a, b) => a + b, 0);
 
         this.history.push({ result: normResult, total, dice, timestamp: Date.now() });
         if (this.history.length > 3000) this.history = this.history.slice(-2500);
@@ -521,9 +1161,23 @@ class SunwinUltimateAI {
     feedback(actualResult) {
         if (this.predictions.length === 0) return;
         const lastPred = this.predictions[this.predictions.length - 1];
+        lastPred.actual = actualResult;
+
         const isCorrect = lastPred.prediction === actualResult;
         this.accuracy.total++;
         if (isCorrect) this.accuracy.correct++;
+
+        if (lastPred.topSources) {
+            for (const source of lastPred.topSources) {
+                for (const key of Object.keys(this.weights)) {
+                    if (key.includes(source.source || source)) {
+                        if (isCorrect) this.weights[key] *= 1.05;
+                        else this.weights[key] *= 0.95;
+                        this.weights[key] = Math.max(0.1, Math.min(5, this.weights[key]));
+                    }
+                }
+            }
+        }
     }
 
     getStats() {
@@ -537,182 +1191,112 @@ class SunwinUltimateAI {
 }
 
 // ============================================
-// KHỞI TẠO AI
+// SERVER EXPRESS
 // ============================================
-const sunwinAI = new SunwinUltimateAI();
-let latestData = null;
-let latestPrediction = null;
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-// ============================================
-// FETCH API VÀ VÒNG LẶP XỬ LÝ
-// ============================================
-const seenSessions = new Set();
+const API_URL = 'http://103.249.117.201:49483/sunwin/tx?key=f7fe0e32f71684bd95ec94f59609801364193b297db4d60e';
 
-async function fetchAndPredict() {
+const ai = new SunwinUltimateAI();
+
+let lastSessionId = null;
+let lastSessionData = null;
+let currentPrediction = null;
+let allHistorySessions = []; // Lưu tất cả phiên đã lấy được
+
+async function fetchAndUpdate() {
     try {
-        const res = await fetch(API_URL);
-        const text = await res.text();
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
 
-        // Parse an toàn
-        let data;
-        try { data = JSON.parse(text); } catch (e) {
-            console.error('❌ JSON parse error:', text.slice(0, 200));
-            return;
+        let sessions = Array.isArray(data) ? data : (data.data || [data]);
+        if (!sessions.length) return;
+
+        // Lấy phiên mới nhất (theo số phiên hoặc thời gian)
+        const latest = sessions.reduce((a, b) => {
+            let idA = a.phien || a.session || a.id || 0;
+            let idB = b.phien || b.session || b.id || 0;
+            return idA > idB ? a : b;
+        }, sessions[0]);
+
+        const sessionId = latest.phien || latest.session || latest.id;
+        if (sessionId === lastSessionId) return;
+
+        lastSessionId = sessionId;
+        lastSessionData = latest;
+
+        // Lưu vào lịch sử đầy đủ (nếu chưa có)
+        if (!allHistorySessions.some(s => (s.phien || s.session || s.id) === sessionId)) {
+            allHistorySessions.push(latest);
+            // Giới hạn lịch sử 1000 phiên
+            if (allHistorySessions.length > 1000) allHistorySessions.shift();
         }
 
-        // Log cấu trúc dữ liệu lần đầu để debug
-        if (seenSessions.size === 0) {
-            console.log('📦 Cấu trúc API:', JSON.stringify(data).slice(0, 300));
-        }
-
-        // Chuẩn hoá thành mảng bất kể API trả về dạng gì
-        let items = [];
-        if (Array.isArray(data)) {
-            items = data;
-        } else if (data && typeof data === 'object') {
-            // Tìm field đầu tiên là mảng
-            const arrField = Object.values(data).find(v => Array.isArray(v));
-            if (arrField) items = arrField;
-            else items = [data]; // wrap object đơn thành mảng
+        ai.addSession(latest);
+        const pred = ai.predict();
+        if (pred && !pred.wait) {
+            currentPrediction = pred;
+            console.log(`[${new Date().toISOString()}] Phiên ${sessionId} -> Dự đoán: ${pred.prediction} (${pred.confidence}%)`);
         } else {
-            console.error('❌ Dữ liệu không hợp lệ:', typeof data);
-            return;
+            console.log(`[${new Date().toISOString()}] Chưa đủ dữ liệu (cần ít nhất 5 phiên)`);
         }
-
-        // Lọc bỏ phần tử null/undefined
-        items = items.filter(i => i && typeof i === 'object');
-
-        for (const item of items) {
-            const sessionId = item.phien || item.session || item.id || Date.now();
-            if (seenSessions.has(String(sessionId))) continue;
-            seenSessions.add(String(sessionId));
-            if (seenSessions.size > 10000) seenSessions.clear();
-
-            sunwinAI.addSession(item);
-            latestData = item;
-
-            if (sunwinAI.history.length >= 5) {
-                const prediction = sunwinAI.predict();
-                const stats = sunwinAI.getStats();
-
-                const dice = [
-                    item.xuc_xac_1 || item.dice1 || 0,
-                    item.xuc_xac_2 || item.dice2 || 0,
-                    item.xuc_xac_3 || item.dice3 || 0
-                ];
-
-                latestPrediction = {
-                    Id: item.id || item.phien || sessionId,
-                    Phien: sessionId,
-                    Ket_qua: item.ket_qua || item.result || 'N/A',
-                    Xuc_xac: `${dice[0]}-${dice[1]}-${dice[2]}`,
-                    Du_doan: prediction.prediction,
-                    Do_tin_cay: `${prediction.confidence}%`,
-                    Top10_dong_thuan: prediction.top10Agree ? 'CÓ' : 'KHÔNG',
-                    Top20_dong_thuan: prediction.top20Agree ? 'CÓ' : 'KHÔNG',
-                    Top50_dong_thuan: prediction.top50Agree ? 'CÓ' : 'KHÔNG',
-                    Tong_models: prediction.totalModels,
-                    Top_nguon: prediction.topSources,
-                    Thong_ke: stats,
-                    Timestamp: new Date().toISOString()
-                };
-
-                console.log('========================================');
-                console.log(`📌 Phiên: ${sessionId} | KQ: ${latestPrediction.Ket_qua}`);
-                console.log(`🎲 Xúc xắc: ${latestPrediction.Xuc_xac}`);
-                console.log(`🔮 DỰ ĐOÁN: ${latestPrediction.Du_doan}`);
-                console.log(`💯 Độ tin cậy: ${latestPrediction.Do_tin_cay}`);
-                console.log(`📊 Độ chính xác: ${stats.accuracy}% (${stats.totalCorrect}/${stats.totalPredictions})`);
-                console.log('========================================\n');
-
-                if (item.ket_qua || item.result) {
-                    sunwinAI.feedback(item.ket_qua || item.result);
-                }
-            }
-        }
-    } catch (e) {
-        console.error('❌ API Error:', e.message);
+    } catch (err) {
+        console.error('Lỗi fetch API:', err.message);
     }
 }
 
-// Chạy vòng lặp mỗi 1 giây
-setInterval(fetchAndPredict, 1000);
-fetchAndPredict(); // chạy ngay lập tức lần đầu
+// Polling mỗi 5 giây
+setInterval(fetchAndUpdate, 5000);
+fetchAndUpdate();
 
-// ============================================
-// API ENDPOINTS
-// ============================================
-
-// GET /predict - Lấy dự đoán mới nhất (đúng mẫu yêu cầu)
-app.get('/predict', (req, res) => {
-    if (!latestPrediction) {
-        return res.json({
-            message: 'Đang thu thập dữ liệu, vui lòng thử lại sau...',
-            historySize: sunwinAI.history.length
-        });
-    }
-
-    // Trả về đúng mẫu yêu cầu
-    res.json({
-        Id: latestPrediction.Id,
-        Phien: latestPrediction.Phien,
-        Ket_qua: latestPrediction.Ket_qua,
-        Xuc_xac: latestPrediction.Xuc_xac,
-        Du_doan: latestPrediction.Du_doan,
-        Do_tin_cay: latestPrediction.Do_tin_cay
-    });
-});
-
-// GET /predict/full - Dự đoán đầy đủ chi tiết
-app.get('/predict/full', (req, res) => {
-    if (!latestPrediction) {
-        return res.json({ message: 'Đang thu thập dữ liệu...' });
-    }
-    res.json(latestPrediction);
-});
-
-// GET /stats - Thống kê
-app.get('/stats', (req, res) => {
-    res.json({
-        ...sunwinAI.getStats(),
-        historySize: sunwinAI.history.length
-    });
-});
-
-// GET /history - Lịch sử gần nhất
-app.get('/history', (req, res) => {
-    const limit = parseInt(req.query.limit) || 20;
-    res.json(sunwinAI.history.slice(-limit));
-});
-
-// GET / - Trang chủ
+// Endpoint chính: hiển thị dự đoán theo đúng định dạng
 app.get('/', (req, res) => {
+    if (!lastSessionData || !currentPrediction) {
+        return res.status(503).send('Đang khởi tạo dữ liệu... Vui lòng đợi vài giây.');
+    }
+
+    const phien = lastSessionData.phien || lastSessionData.session || lastSessionData.id || 'N/A';
+    const ketQua = lastSessionData.ket_qua || lastSessionData.result || 'N/A';
+    const x1 = lastSessionData.xuc_xac_1 || lastSessionData.dice1 || 0;
+    const x2 = lastSessionData.xuc_xac_2 || lastSessionData.dice2 || 0;
+    const x3 = lastSessionData.xuc_xac_3 || lastSessionData.dice3 || 0;
+    const xucXac = `${x1}-${x2}-${x3}`;
+    const duDoan = currentPrediction.prediction;
+    const doTinCay = currentPrediction.confidence + '%';
+
+    const output = `Id: s2king
+Phien: ${phien}
+Ket_qua: ${ketQua}
+Xuc_xac: ${xucXac}
+Du_doan: ${duDoan}
+Do_tin_cay: ${doTinCay}`;
+
+    res.set('Content-Type', 'text/plain; charset=utf-8');
+    res.send(output);
+});
+
+// Endpoint lịch sử phiên (JSON)
+app.get('/history', (req, res) => {
     res.json({
-        name: 'Sunwin Ultimate Predictor API',
-        version: '1.0.0',
-        endpoints: {
-            'GET /predict': 'Dự đoán mới nhất (mẫu chuẩn)',
-            'GET /predict/full': 'Dự đoán đầy đủ chi tiết',
-            'GET /stats': 'Thống kê độ chính xác',
-            'GET /history?limit=20': 'Lịch sử các phiên'
-        },
-        source_api: API_URL
+        total: allHistorySessions.length,
+        sessions: allHistorySessions
     });
 });
 
-// ============================================
-// KHỞI ĐỘNG SERVER
-// ============================================
+// Endpoint debug (tuỳ chọn)
+app.get('/debug', (req, res) => {
+    res.json({
+        currentSession: lastSessionData,
+        currentPrediction: currentPrediction,
+        stats: ai.getStats(),
+        historySize: allHistorySessions.length
+    });
+});
+
 app.listen(PORT, () => {
-    console.log('🚀 SUNWIN ULTIMATE PREDICTOR - SERVER ĐANG CHẠY');
-    console.log(`🌐 Server: http://localhost:${PORT}`);
-    console.log(`🔗 API gốc: ${API_URL}`);
-    console.log('');
-    console.log('📡 Endpoints:');
-    console.log(`  → http://localhost:${PORT}/predict       (dự đoán mẫu chuẩn)`);
-    console.log(`  → http://localhost:${PORT}/predict/full  (chi tiết đầy đủ)`);
-    console.log(`  → http://localhost:${PORT}/stats         (thống kê)`);
-    console.log(`  → http://localhost:${PORT}/history       (lịch sử)`);
-    console.log('');
-    console.log('⏳ Đang thu thập dữ liệu...\n');
+    console.log(`Server đang chạy trên cổng ${PORT}`);
+    console.log(`Truy cập http://localhost:${PORT} để xem dự đoán`);
+    console.log(`Truy cập http://localhost:${PORT}/history để xem lịch sử phiên`);
 });
