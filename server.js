@@ -551,8 +551,36 @@ const seenSessions = new Set();
 async function fetchAndPredict() {
     try {
         const res = await fetch(API_URL);
-        const data = await res.json();
-        const items = Array.isArray(data) ? data : (data.data || [data]);
+        const text = await res.text();
+
+        // Parse an toàn
+        let data;
+        try { data = JSON.parse(text); } catch (e) {
+            console.error('❌ JSON parse error:', text.slice(0, 200));
+            return;
+        }
+
+        // Log cấu trúc dữ liệu lần đầu để debug
+        if (seenSessions.size === 0) {
+            console.log('📦 Cấu trúc API:', JSON.stringify(data).slice(0, 300));
+        }
+
+        // Chuẩn hoá thành mảng bất kể API trả về dạng gì
+        let items = [];
+        if (Array.isArray(data)) {
+            items = data;
+        } else if (data && typeof data === 'object') {
+            // Tìm field đầu tiên là mảng
+            const arrField = Object.values(data).find(v => Array.isArray(v));
+            if (arrField) items = arrField;
+            else items = [data]; // wrap object đơn thành mảng
+        } else {
+            console.error('❌ Dữ liệu không hợp lệ:', typeof data);
+            return;
+        }
+
+        // Lọc bỏ phần tử null/undefined
+        items = items.filter(i => i && typeof i === 'object');
 
         for (const item of items) {
             const sessionId = item.phien || item.session || item.id || Date.now();
